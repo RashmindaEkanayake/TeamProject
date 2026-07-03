@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notification Center | Nexus ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcf8fa;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "primary-fixed-dim": "#bec6e0",
+                      "on-secondary-fixed": "#001a42",
+                      "surface-dim": "#dcd9db",
+                      "outline-variant": "#c6c6cd",
+                      "primary": "#000000",
+                      "surface-container": "#f0edef",
+                      "surface": "#fcf8fa",
+                      "on-error-container": "#93000a",
+                      "background": "#fcf8fa",
+                      "surface-container-low": "#f6f3f5",
+                      "surface-variant": "#e4e2e4",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "tertiary-container": "#271901",
+                      "tertiary": "#000000",
+                      "outline": "#76777d",
+                      "on-primary-container": "#7c839b",
+                      "secondary-container": "#2170e4",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-tint": "#565e74",
+                      "inverse-surface": "#303032",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "on-tertiary-container": "#98805d",
+                      "surface-container-high": "#eae7e9",
+                      "on-tertiary-fixed": "#271901",
+                      "surface-container-highest": "#e4e2e4",
+                      "on-tertiary-fixed-variant": "#574425",
+                      "on-surface-variant": "#45464d",
+                      "on-error": "#ffffff",
+                      "on-primary-fixed": "#131b2e",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#fcdeb5",
+                      "primary-fixed": "#dae2fd",
+                      "on-surface": "#1b1b1d",
+                      "on-secondary-fixed-variant": "#004395",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed-dim": "#dec29a",
+                      "primary-container": "#131b2e",
+                      "secondary-fixed": "#d8e2ff",
+                      "inverse-primary": "#bec6e0",
+                      "on-background": "#1b1b1d",
+                      "secondary": "#0058be",
+                      "surface-bright": "#fcf8fa",
+                      "on-secondary-container": "#fefcff",
+                      "on-secondary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "inverse-on-surface": "#f3f0f2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-max-width": "1440px",
+                      "md": "16px",
+                      "sidebar-width": "260px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "title-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "table-data": ["Inter"],
+                      "label-md": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "title-lg": ["18px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "table-data": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="w-[260px] h-screen fixed left-0 top-0 bg-surface-container-lowest border-r border-outline-variant shadow-sm flex flex-col py-lg px-md z-20">
+<div class="mb-xl px-sm">
+<h1 class="font-display-lg text-display-lg font-bold text-primary">Nexus ERP</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Enterprise Resource Planning</p>
+</div>
+<button class="mb-lg w-full flex items-center justify-center gap-sm bg-primary text-on-primary py-sm px-md rounded-lg font-label-md text-label-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>New Transaction</span>
+</button>
+<nav class="flex-1 space-y-xs overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-md px-md py-sm rounded hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined">input</span>
+<span class="font-label-md text-label-md">Receiving</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-md text-label-md">Suppliers</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Pricing</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded bg-surface-container-low text-secondary font-bold border-r-4 border-secondary transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md text-label-md">Notifications</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-outline-variant space-y-xs">
+<a class="flex items-center gap-md px-md py-sm rounded hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded hover:bg-surface-container-low transition-colors duration-200 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Content Area -->
+<main class="flex-1 ml-[260px] min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="h-16 fixed top-0 right-0 left-[260px] z-10 bg-surface-container-lowest border-b border-outline-variant shadow-sm flex items-center justify-between px-lg">
+<div class="flex items-center gap-lg">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-lg font-body-md text-body-md w-64 focus:ring-2 focus:ring-secondary transition-all" placeholder="Search resources..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="hover:bg-surface-container-low rounded-full p-2 text-on-surface-variant focus:ring-2 focus:ring-secondary transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:bg-surface-container-low rounded-full p-2 text-on-surface-variant focus:ring-2 focus:ring-secondary transition-all">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="flex items-center gap-sm ml-sm cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4d2sZRsRJzpwLIIoJC96Kw9NsAkryNQIxr64Z5W5sVjTCwXGmf0IJfFnnlhZXts2CD0KJwy9wONXI-ttRONbuFXdjgV1Txquci_baje2zj1hIU0-sRrol8nBDbTuJ0LuTtFT7dlpWGjyOTppdeCgUyolLwIKZ_FL33HX9CT-_yG1CZnneyiCCGx0J7JaVWZ1-IlMUPh51MR9SncyoYEVSennwub2dy84e6BefWxK9zUr8oTAg_wS8sb9ioQSH5k_3AXbvyXWie6c"/>
+</div>
+<span class="material-symbols-outlined text-outline">expand_more</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<div class="mt-16 p-lg max-w-[1440px] mx-auto w-full">
+<!-- Breadcrumbs & Actions -->
+<div class="flex justify-between items-center mb-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Notification Center</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Stay updated on system alerts, inventory changes, and order status.</p>
+</div>
+<div class="flex gap-md">
+<button class="flex items-center gap-xs font-label-md text-label-md text-secondary hover:bg-secondary-fixed p-2 px-md rounded transition-all">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+                        Mark all as read
+                    </button>
+<button class="flex items-center gap-xs font-label-md text-label-md bg-surface-container-lowest border border-outline-variant py-2 px-md rounded hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        Filters
+                    </button>
+</div>
+</div>
+<!-- Bento Layout for Stats & Categories -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg mb-xl">
+<!-- Summary Card: Total -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Unread Alerts</span>
+<div class="flex items-baseline gap-sm">
+<span class="font-display-lg text-display-lg font-bold text-primary">24</span>
+<span class="text-error font-label-sm text-label-sm">+3 new today</span>
+</div>
+</div>
+<div class="h-1 bg-surface-container-low rounded-full mt-md">
+<div class="h-1 bg-primary w-2/3 rounded-full"></div>
+</div>
+</div>
+<!-- Summary Card: Inventory -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<div class="bg-primary-fixed p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<span class="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-full">4 CRITICAL</span>
+</div>
+<div class="mt-md">
+<span class="font-label-md text-label-md text-on-surface-variant">Inventory</span>
+<p class="font-headline-sm text-headline-sm text-on-surface">12 Notifications</p>
+</div>
+</div>
+<!-- Summary Card: Orders -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<div class="bg-secondary-fixed p-2 rounded-lg">
+<span class="material-symbols-outlined text-secondary">shopping_cart</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-2 py-0.5 rounded-full">8 INFO</span>
+</div>
+<div class="mt-md">
+<span class="font-label-md text-label-md text-on-surface-variant">Orders</span>
+<p class="font-headline-sm text-headline-sm text-on-surface">8 Notifications</p>
+</div>
+</div>
+<!-- Summary Card: System -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<div class="bg-tertiary-fixed p-2 rounded-lg">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant">settings</span>
+</div>
+<span class="bg-surface-variant text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded-full">4 WARNING</span>
+</div>
+<div class="mt-md">
+<span class="font-label-md text-label-md text-on-surface-variant">System</span>
+<p class="font-headline-sm text-headline-sm text-on-surface">4 Notifications</p>
+</div>
+</div>
+</div>
+<!-- List Section -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="px-lg py-md border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
+<div class="flex gap-lg">
+<button class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1">All Notifications</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors pb-1">Unread</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors pb-1">Archived</button>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Showing 1-10 of 24</span>
+<button class="p-1 hover:bg-surface-container-high rounded"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button>
+<button class="p-1 hover:bg-surface-container-high rounded"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button>
+</div>
+</div>
+<!-- Notification Rows -->
+<div class="divide-y divide-outline-variant">
+<!-- Critical Alert -->
+<div class="p-lg flex items-start gap-md hover:bg-surface-container-low transition-colors group">
+<div class="w-2 h-2 rounded-full bg-error mt-2.5 shrink-0"></div>
+<div class="bg-error-container p-2 rounded-lg shrink-0">
+<span class="material-symbols-outlined text-error" data-weight="fill">warning</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-title-lg text-title-lg text-on-surface">Critical Stock Alert: SKU-90210</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 mins ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md max-w-2xl">Stock level for 'Enterprise Hub 200' has fallen below the safety threshold (5 units). Immediate reordering from Supplier #012 is recommended to avoid disruption.</p>
+<div class="flex gap-md">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-2 rounded-lg hover:opacity-90 transition-all">View Inventory</button>
+<button class="border border-outline-variant bg-surface-container-lowest font-label-md text-label-md px-md py-2 rounded-lg hover:bg-surface-container-low transition-all">Reorder Now</button>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 p-2 text-outline hover:text-on-surface transition-all">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Info Alert: Order -->
+<div class="p-lg flex items-start gap-md hover:bg-surface-container-low transition-colors group">
+<div class="w-2 h-2 rounded-full bg-secondary mt-2.5 shrink-0"></div>
+<div class="bg-secondary-fixed p-2 rounded-lg shrink-0">
+<span class="material-symbols-outlined text-secondary" data-weight="fill">shopping_cart</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-title-lg text-title-lg text-on-surface">New Bulk Order Received</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">15 mins ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md max-w-2xl">Order #ORD-8829 from client 'TechSolutions Inc.' for 500 units of standard connectors has been confirmed and is awaiting shipment.</p>
+<div class="flex gap-md">
+<button class="bg-secondary text-on-secondary font-label-md text-label-md px-md py-2 rounded-lg hover:opacity-90 transition-all">View Order</button>
+<button class="border border-outline-variant bg-surface-container-lowest font-label-md text-label-md px-md py-2 rounded-lg hover:bg-surface-container-low transition-all">Assign Staff</button>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 p-2 text-outline hover:text-on-surface transition-all">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Warning Alert: Pricing -->
+<div class="p-lg flex items-start gap-md hover:bg-surface-container-low transition-colors group">
+<div class="w-2 h-2 rounded-full bg-transparent mt-2.5 shrink-0"></div> <!-- Read item -->
+<div class="bg-tertiary-fixed p-2 rounded-lg shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant" data-weight="fill">payments</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-title-lg text-title-lg text-on-surface opacity-60">Price Change Pending Approval</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1 hour ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md max-w-2xl opacity-60">Supplier 'Global Parts' has updated their pricing index for Q3. A 4.5% increase is suggested for your retail catalog to maintain margins.</p>
+<div class="flex gap-md">
+<button class="border border-outline-variant bg-surface-container-lowest font-label-md text-label-md px-md py-2 rounded-lg hover:bg-surface-container-low transition-all">Review Pricing</button>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 p-2 text-outline hover:text-on-surface transition-all">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Info Alert: System -->
+<div class="p-lg flex items-start gap-md hover:bg-surface-container-low transition-colors group">
+<div class="w-2 h-2 rounded-full bg-secondary mt-2.5 shrink-0"></div>
+<div class="bg-surface-variant p-2 rounded-lg shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant" data-weight="fill">cloud_sync</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-title-lg text-title-lg text-on-surface">Scheduled System Maintenance</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">4 hours ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md max-w-2xl">The ERP database will undergo routine maintenance tonight at 23:00 EST. Expect minor latency during the 15-minute maintenance window.</p>
+<div class="flex gap-md">
+<button class="border border-outline-variant bg-surface-container-lowest font-label-md text-label-md px-md py-2 rounded-lg hover:bg-surface-container-low transition-all">View Details</button>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 p-2 text-outline hover:text-on-surface transition-all">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dashboard Visual Integration -->
+<div class="mt-xl grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg relative overflow-hidden h-64">
+<div class="relative z-10">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Inventory Health Map</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Visual status of regional distribution centers.</p>
+</div>
+<!-- Placeholder for Map Visualization -->
+<div class="absolute inset-0 mt-16 flex items-center justify-center bg-surface-container-low m-lg rounded-lg border border-dashed border-outline">
+<img alt="A high-tech digital map of North America displaying inventory health across multiple nodes. The aesthetic is clean and professional with deep navy backgrounds and neon blue connection lines showing supply chain paths. Points of interest are highlighted with glowing data markers indicating warehouse capacity levels in real-time." class="w-full h-full object-cover rounded-lg opacity-50" data-location="Chicago" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeQaOE__wspkPJXP7tkoSSn41MEeQNe9fBA9fl4_Pa1tTfKxVPk6GDfMRFk71F3XxOibp-LNNjAAaCO03-6EBLN-WOcGfmsigeXzaKDIk6IWRVTX89v9v07bWDRVvOTw_pGO6z7ubpYEgZOjmPsQUgpq6rLO3vYCk_8_C2SnvYIfeCvmme34oPZULodosJnIXrjsPPtWVnUnbych46h2soYMsac_RyRLiCK3DSf-0p9s7Uy3D3HVb5_lH5oobvEI4TKg0Fys84C3Y"/>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Alert Distribution</h3>
+<div class="mt-lg flex items-center justify-around">
+<!-- Circular Progress Simulation -->
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle cx="64" cy="64" fill="transparent" r="54" stroke="#f1f5f9" stroke-width="12"></circle>
+<circle cx="64" cy="64" fill="transparent" r="54" stroke="#0058be" stroke-dasharray="339" stroke-dashoffset="100" stroke-width="12"></circle>
+<circle cx="64" cy="64" fill="transparent" r="54" stroke="#ba1a1a" stroke-dasharray="339" stroke-dashoffset="300" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-md text-headline-md">24</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total</span>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 rounded-full bg-error"></div>
+<span class="font-label-md text-label-md">Critical (15%)</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="font-label-md text-label-md">Orders (60%)</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 rounded-full bg-surface-variant"></div>
+<span class="font-label-md text-label-md">System (25%)</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full border border-outline-variant py-2 rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-all">Download Audit Report</button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for mark all as read
+        document.querySelector('button:contains("Mark all as read")')?.addEventListener('click', () => {
+            document.querySelectorAll('.rounded-full.bg-error, .rounded-full.bg-secondary').forEach(dot => {
+                dot.style.backgroundColor = 'transparent';
+            });
+            document.querySelectorAll('.font-title-lg').forEach(title => {
+                title.classList.add('opacity-60');
+            });
+        });
+
+        // Add a helper for :contains if not available
+        window.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if(btn.innerText.includes('Mark all as read')) {
+                    btn.addEventListener('click', () => {
+                        const dots = document.querySelectorAll('.bg-error.w-2, .bg-secondary.w-2');
+                        dots.forEach(d => d.className = d.className.replace('bg-error', 'bg-transparent').replace('bg-secondary', 'bg-transparent'));
+                        const titles = document.querySelectorAll('h4');
+                        titles.forEach(t => t.classList.add('opacity-60'));
+                        const bodyTexts = document.querySelectorAll('p.font-body-md');
+                        bodyTexts.forEach(p => p.classList.add('opacity-60'));
+                    });
+                }
+            });
+        });
+    </script>
+</body></html>

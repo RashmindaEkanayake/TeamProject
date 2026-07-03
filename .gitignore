@@ -1,0 +1,19 @@
+# backend
+inventory-backend/target/
+
+# frontend
+inventory-frontend/node_modules/
+inventory-frontend/dist/
+inventory-frontend/build/
+
+# env files
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

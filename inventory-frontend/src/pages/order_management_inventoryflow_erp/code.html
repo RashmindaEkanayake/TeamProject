@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nexus ERP - Order Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-secondary-fixed": "#001a42",
+                    "surface-dim": "#dcd9db",
+                    "outline-variant": "#c6c6cd",
+                    "primary": "#000000",
+                    "surface-container": "#f0edef",
+                    "surface": "#fcf8fa",
+                    "on-error-container": "#93000a",
+                    "background": "#fcf8fa",
+                    "surface-container-low": "#f6f3f5",
+                    "surface-variant": "#e4e2e4",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "tertiary-container": "#271901",
+                    "tertiary": "#000000",
+                    "outline": "#76777d",
+                    "on-primary-container": "#7c839b",
+                    "secondary-container": "#2170e4",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#565e74",
+                    "inverse-surface": "#303032",
+                    "secondary-fixed-dim": "#adc6ff",
+                    "on-tertiary-container": "#98805d",
+                    "surface-container-high": "#eae7e9",
+                    "on-tertiary-fixed": "#271901",
+                    "surface-container-highest": "#e4e2e4",
+                    "on-tertiary-fixed-variant": "#574425",
+                    "on-surface-variant": "#45464d",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#131b2e",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#fcdeb5",
+                    "primary-fixed": "#dae2fd",
+                    "on-surface": "#1b1b1d",
+                    "on-secondary-fixed-variant": "#004395",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#dec29a",
+                    "primary-container": "#131b2e",
+                    "secondary-fixed": "#d8e2ff",
+                    "inverse-primary": "#bec6e0",
+                    "on-background": "#1b1b1d",
+                    "secondary": "#0058be",
+                    "surface-bright": "#fcf8fa",
+                    "on-secondary-container": "#fefcff",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#f3f0f2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max-width": "1440px",
+                    "md": "16px",
+                    "sidebar-width": "260px",
+                    "xs": "4px",
+                    "xl": "32px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "gutter": "16px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "title-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "table-data": ["Inter"],
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "title-lg": ["18px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "table-data": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="w-[260px] h-screen fixed left-0 top-0 bg-surface-container-lowest dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline-variant shadow-sm flex flex-col h-full py-lg px-md z-20">
+<div class="mb-xl px-sm">
+<h1 class="font-display-lg text-display-lg font-bold text-primary dark:text-primary-fixed">Nexus ERP</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Enterprise Resource Planning</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Navigation Items Mapping -->
+<a class="flex items-center gap-md px-sm py-md rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                Inventory
+            </a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="input">input</span>
+                Receiving
+            </a>
+<!-- Active Navigation: Orders -->
+<a class="flex items-center gap-md px-sm py-md rounded-lg font-label-md text-label-md text-secondary dark:text-secondary-fixed font-bold border-r-4 border-secondary bg-surface-container-low active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+                Orders
+            </a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+                Customers
+            </a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+                Suppliers
+            </a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Pricing
+            </a>
+<a class="flex items-center gap-md px-sm py-md rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                Notifications
+            </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-lg space-y-1">
+<button class="w-full bg-primary text-on-primary font-label-md py-md rounded px-md flex items-center justify-center gap-sm mb-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                New Transaction
+            </button>
+<a class="flex items-center gap-md px-sm py-md font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md px-sm py-md font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- TopNavBar (Authority: JSON) -->
+<header class="h-16 fixed top-0 right-0 left-[260px] z-10 bg-surface-container-lowest dark:bg-surface-container-lowest border-b border-outline-variant dark:border-outline-variant shadow-sm flex items-center justify-between px-lg w-full">
+<div class="flex items-center gap-lg">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="pl-10 pr-md py-2 bg-surface-container-low border-none rounded-full w-80 focus:ring-2 focus:ring-secondary text-body-sm transition-all" placeholder="Search orders, customers..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="hover:bg-surface-container-low rounded-full p-2 text-on-surface-variant transition-all focus:ring-2 focus:ring-secondary">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:bg-surface-container-low rounded-full p-2 text-on-surface-variant transition-all focus:ring-2 focus:ring-secondary">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant ml-sm">
+<img alt="Admin" data-alt="A professional headshot of a senior operations manager in a corporate setting. The lighting is soft and even, highlighting a confident expression. The background is a blurred office environment with modern glass architecture and cool blue tones. High-end professional photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-sWj05s-g68Z13RPXlPIUYmTKEYhfNn8SMQAWBv14eo-RH4-m8V723_jRxIlBc3JLG4aRWKpvCSTzrz3VoT_LAx5EreydZAXtnMnx7Wgw8jlOVTIS8i9SSGpNOX02HBlXO-hMSp1Brhj58P-YEmOj0y0_fvSCXvelsHJEeUBCLMLAjpAwsMG60AnBykD0NQ67O7sB5rTAKWGuDlsnrfZvvKRUPxjYlgqDG1SbUKHAKPgbNMescsMXkj-nGQsW_GJQcZPIlm1kAlQ"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] pt-16 min-h-screen p-lg">
+<div class="max-w-container-max-width mx-auto">
+<!-- Page Header -->
+<div class="flex items-center justify-between mb-xl">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-background">Order Management</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Oversee and process inbound customer orders</p>
+</div>
+<div class="flex gap-md">
+<button class="px-lg py-sm border border-outline text-on-surface font-label-md rounded flex items-center gap-xs hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                        Filter
+                    </button>
+<button class="px-lg py-sm border border-outline text-on-surface font-label-md rounded flex items-center gap-xs hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+                        Export CSV
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg mb-xl">
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm flex items-center gap-lg">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="pending_actions">pending_actions</span>
+</div>
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant uppercase">Pending</p>
+<h4 class="text-headline-sm font-headline-sm">24 Orders</h4>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm flex items-center gap-lg">
+<div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+</div>
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant uppercase">Approved</p>
+<h4 class="text-headline-sm font-headline-sm">1,208 Orders</h4>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm flex items-center gap-lg">
+<div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-700">
+<span class="material-symbols-outlined" data-icon="sync">sync</span>
+</div>
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant uppercase">Processing</p>
+<h4 class="text-headline-sm font-headline-sm">156 Orders</h4>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm flex items-center gap-lg">
+<div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined" data-icon="block">block</span>
+</div>
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant uppercase">Rejected</p>
+<h4 class="text-headline-sm font-headline-sm">12 Orders</h4>
+</div>
+</div>
+</div>
+<!-- Main Order Table -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="p-md font-label-md text-label-md text-on-surface-variant border-b border-outline-variant">ORDER ID</th>
+<th class="p-md font-label-md text-label-md text-on-surface-variant border-b border-outline-variant">CUSTOMER</th>
+<th class="p-md font-label-md text-label-md text-on-surface-variant border-b border-outline-variant">DATE</th>
+<th class="p-md font-label-md text-label-md text-on-surface-variant border-b border-outline-variant">AMOUNT</th>
+<th class="p-md font-label-md text-label-md text-on-surface-variant border-b border-outline-variant">STATUS</th>
+<th class="p-md font-label-md text-label-md text-on-surface-variant border-b border-outline-variant">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="text-table-data font-table-data">
+<!-- Pending Row -->
+<tr class="hover:bg-surface-container-low transition-colors border-b border-outline-variant group">
+<td class="p-md font-semibold">#ORD-9921</td>
+<td class="p-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center text-[10px]">AW</div>
+<span>Astra Wings Corp</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">Oct 24, 2023</td>
+<td class="p-md font-semibold">$12,450.00</td>
+<td class="p-md">
+<span class="px-sm py-1 rounded bg-yellow-50 text-yellow-800 text-[11px] font-bold border border-yellow-200 inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+                                        Pending
+                                    </span>
+</td>
+<td class="p-md">
+<button class="text-secondary hover:underline font-semibold" onclick="openOrderDetails('ORD-9921')">View Details</button>
+</td>
+</tr>
+<!-- Approved Row -->
+<tr class="hover:bg-surface-container-low transition-colors border-b border-outline-variant">
+<td class="p-md font-semibold">#ORD-9918</td>
+<td class="p-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center text-[10px]">LM</div>
+<span>Lunar Manufacturing</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">Oct 23, 2023</td>
+<td class="p-md font-semibold">$8,120.00</td>
+<td class="p-md">
+<span class="px-sm py-1 rounded bg-green-50 text-green-800 text-[11px] font-bold border border-green-200 inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+                                        Approved
+                                    </span>
+</td>
+<td class="p-md">
+<button class="text-secondary hover:underline font-semibold">View Details</button>
+</td>
+</tr>
+<!-- Processing Row -->
+<tr class="hover:bg-surface-container-low transition-colors border-b border-outline-variant">
+<td class="p-md font-semibold">#ORD-9915</td>
+<td class="p-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded-full bg-tertiary-fixed flex items-center justify-center text-[10px]">NS</div>
+<span>Nova Solutions</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">Oct 22, 2023</td>
+<td class="p-md font-semibold">$45,000.00</td>
+<td class="p-md">
+<span class="px-sm py-1 rounded bg-blue-50 text-blue-800 text-[11px] font-bold border border-blue-200 inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="sync">sync</span>
+                                        Processing
+                                    </span>
+</td>
+<td class="p-md">
+<button class="text-secondary hover:underline font-semibold">View Details</button>
+</td>
+</tr>
+<!-- Rejected Row -->
+<tr class="hover:bg-surface-container-low transition-colors border-b border-outline-variant">
+<td class="p-md font-semibold">#ORD-9912</td>
+<td class="p-md">
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded-full bg-error-container flex items-center justify-center text-[10px]">SC</div>
+<span>Stellar Core</span>
+</div>
+</td>
+<td class="p-md text-on-surface-variant">Oct 20, 2023</td>
+<td class="p-md font-semibold">$2,400.00</td>
+<td class="p-md">
+<span class="px-sm py-1 rounded bg-red-50 text-red-800 text-[11px] font-bold border border-red-200 inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="cancel">cancel</span>
+                                        Rejected
+                                    </span>
+</td>
+<td class="p-md">
+<button class="text-secondary hover:underline font-semibold">View Details</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-md flex items-center justify-between border-t border-outline-variant bg-surface-container-low">
+<p class="text-label-sm text-on-surface-variant">Showing 1-10 of 1,412 orders</p>
+<div class="flex gap-xs">
+<button class="p-1 rounded border border-outline-variant bg-surface-container-lowest hover:bg-surface-container transition-colors"><span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span></button>
+<button class="p-1 rounded border border-outline-variant bg-primary text-on-primary text-[12px] px-3">1</button>
+<button class="p-1 rounded border border-outline-variant bg-surface-container-lowest hover:bg-surface-container transition-colors text-[12px] px-3">2</button>
+<button class="p-1 rounded border border-outline-variant bg-surface-container-lowest hover:bg-surface-container transition-colors text-[12px] px-3">3</button>
+<button class="p-1 rounded border border-outline-variant bg-surface-container-lowest hover:bg-surface-container transition-colors"><span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Split View / Detail Side Panel Overlay -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none" id="orderOverlay">
+<div class="absolute right-0 top-0 h-full w-[500px] bg-surface-container-lowest shadow-2xl transition-transform duration-500 translate-x-full flex flex-col" id="orderPanel">
+<!-- Header -->
+<div class="p-lg border-b border-outline-variant flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm" id="orderDetailID">Order #ORD-9921</h3>
+<p class="text-label-sm text-on-surface-variant">Received on Oct 24, 2023 • 10:42 AM</p>
+</div>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors" onclick="closeOrderDetails()">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-lg space-y-xl">
+<!-- Customer Section -->
+<section>
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md tracking-wider">Customer Details</h4>
+<div class="flex items-start gap-md bg-surface-container-low p-md rounded-lg">
+<div class="w-12 h-12 rounded bg-primary text-on-primary flex items-center justify-center font-bold text-xl">AW</div>
+<div>
+<p class="font-title-lg text-title-lg">Astra Wings Corp</p>
+<p class="text-body-sm text-on-surface-variant">Procurement Dept: John Doe</p>
+<p class="text-body-sm text-on-surface-variant">john.doe@astrawings.com</p>
+<p class="text-body-sm text-on-surface-variant mt-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span>
+                                1202 Aero Way, Seattle, WA 98101
+                            </p>
+</div>
+</div>
+</section>
+<!-- Items Section -->
+<section>
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase mb-md tracking-wider">Itemized List</h4>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-sm border-b border-outline-variant">
+<div>
+<p class="font-semibold text-body-md">Titanium Alloy Sheet G5</p>
+<p class="text-label-sm text-on-surface-variant">SKU: MET-TI-001</p>
+</div>
+<div class="text-right">
+<p class="font-semibold">$2,450.00</p>
+<p class="text-label-sm text-on-surface-variant">Qty: 4</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-sm border-b border-outline-variant">
+<div>
+<p class="font-semibold text-body-md">Precision Fastener Kit</p>
+<p class="text-label-sm text-on-surface-variant">SKU: FST-PR-992</p>
+</div>
+<div class="text-right">
+<p class="font-semibold">$650.00</p>
+<p class="text-label-sm text-on-surface-variant">Qty: 10</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-sm border-b border-outline-variant">
+<div>
+<p class="font-semibold text-body-md">Insulation Blanket V4</p>
+<p class="text-label-sm text-on-surface-variant">SKU: INS-TH-441</p>
+</div>
+<div class="text-right">
+<p class="font-semibold">$1,200.00</p>
+<p class="text-label-sm text-on-surface-variant">Qty: 2</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Summary Section -->
+<section class="bg-surface-container rounded-lg p-md">
+<div class="flex justify-between mb-xs">
+<p class="text-body-sm text-on-surface-variant">Subtotal</p>
+<p class="text-body-sm font-semibold">$11,500.00</p>
+</div>
+<div class="flex justify-between mb-xs">
+<p class="text-body-sm text-on-surface-variant">Shipping &amp; Handling</p>
+<p class="text-body-sm font-semibold">$850.00</p>
+</div>
+<div class="flex justify-between mb-md">
+<p class="text-body-sm text-on-surface-variant">Tax (VAT 8%)</p>
+<p class="text-body-sm font-semibold">$100.00</p>
+</div>
+<div class="border-t border-outline-variant pt-md flex justify-between items-center">
+<p class="font-title-lg text-title-lg">Total Amount</p>
+<p class="font-display-lg text-display-lg text-secondary">$12,450.00</p>
+</div>
+</section>
+</div>
+<!-- Footer Actions -->
+<div class="p-lg bg-surface-container-low border-t border-outline-variant flex gap-md">
+<button class="flex-1 px-lg py-md rounded font-semibold text-error border border-error hover:bg-error-container transition-colors flex items-center justify-center gap-sm" onclick="handleReject()">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+                    Reject
+                </button>
+<button class="flex-1 px-lg py-md rounded font-semibold bg-primary text-on-primary hover:opacity-90 transition-opacity flex items-center justify-center gap-sm" onclick="handleApprove()">
+<span class="material-symbols-outlined" data-icon="check">check</span>
+                    Approve Order
+                </button>
+</div>
+</div>
+</div>
+<script>
+        function openOrderDetails(id) {
+            const overlay = document.getElementById('orderOverlay');
+            const panel = document.getElementById('orderPanel');
+            overlay.classList.remove('pointer-events-none', 'opacity-0');
+            panel.classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOrderDetails() {
+            const overlay = document.getElementById('orderOverlay');
+            const panel = document.getElementById('orderPanel');
+            overlay.classList.add('opacity-0');
+            panel.classList.add('translate-x-full');
+            setTimeout(() => {
+                overlay.classList.add('pointer-events-none');
+            }, 500);
+            document.body.style.overflow = '';
+        }
+
+        function handleApprove() {
+            alert('Order Approved successfully.');
+            closeOrderDetails();
+        }
+
+        function handleReject() {
+            const reason = prompt('Please provide a reason for rejection:');
+            if(reason !== null) {
+                alert('Order Rejected.');
+                closeOrderDetails();
+            }
+        }
+    </script>
+</body></html>
