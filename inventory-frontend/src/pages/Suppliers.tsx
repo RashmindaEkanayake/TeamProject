@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supplierService } from '../services/api';
+import Modal from '../components/Modal';
 
 interface Supplier {
   supplierId: number;
@@ -167,40 +168,37 @@ const Suppliers: React.FC = () => {
         )}
       </section>
 
-      {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
-          <div className="bg-surface-elevated border border-glass-border rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border flex-shrink-0">
-              <h2 className="text-lg font-bold text-on-surface">{editId ? 'Edit Supplier' : 'Add Supplier'}</h2>
-              <button onClick={() => setShowModal(false)} className="p-2 hover:bg-surface rounded-lg text-on-surface-muted"><span className="material-symbols-outlined">close</span></button>
-            </div>
-            <form onSubmit={handleSave} className="p-6 space-y-3 overflow-y-auto flex-1">
-              <div className="grid grid-cols-2 gap-3">
-                {fields.map(f => (
-                  <div key={f.key} className={f.key === 'bankDetails' ? 'col-span-2' : ''}>
-                    <label className="block text-xs font-semibold text-on-surface-muted mb-1 uppercase tracking-wider">{f.label}{f.required && <span className="text-error ml-0.5">*</span>}</label>
-                    <input
-                      type={('type' in f ? f.type : 'text') as string}
-                      required={f.required}
-                      value={form[f.key]}
-                      onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
-                      placeholder={f.placeholder}
-                      className="w-full px-3 py-2 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-on-surface-muted"
-                    />
-                  </div>
-                ))}
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={editId ? 'Edit Supplier' : 'Add Supplier'}
+        maxWidthClass="max-w-lg"
+      >
+        <form onSubmit={handleSave} className="p-6 space-y-3 overflow-y-auto flex-1">
+          <div className="grid grid-cols-2 gap-3">
+            {fields.map(f => (
+              <div key={f.key} className={f.key === 'bankDetails' ? 'col-span-2' : ''}>
+                <label className="block text-xs font-semibold text-on-surface-muted mb-1 uppercase tracking-wider">{f.label}{f.required && <span className="text-error ml-0.5">*</span>}</label>
+                <input
+                  type={('type' in f ? f.type : 'text') as string}
+                  required={f.required}
+                  value={form[f.key]}
+                  onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
+                  placeholder={f.placeholder}
+                  className="w-full px-3 py-2 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-on-surface-muted"
+                />
               </div>
-              <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 rounded-xl bg-surface-elevated border border-glass-border text-on-surface text-sm hover:bg-outline-variant transition-colors">Cancel</button>
-                <button type="submit" disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-surface text-sm font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
-                  {saving && <div className="w-4 h-4 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin" />}
-                  {saving ? 'Saving...' : (editId ? 'Update' : 'Add Supplier')}
-                </button>
-              </div>
-            </form>
+            ))}
           </div>
-        </div>
-      )}
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 rounded-xl bg-surface-elevated border border-glass-border text-on-surface text-sm hover:bg-outline-variant transition-colors">Cancel</button>
+            <button type="submit" disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-surface text-sm font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+              {saving && <div className="w-4 h-4 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin" />}
+              {saving ? 'Saving...' : (editId ? 'Update' : 'Add Supplier')}
+            </button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

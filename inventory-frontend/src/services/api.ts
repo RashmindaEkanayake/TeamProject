@@ -36,12 +36,21 @@ export const authService = {
   login: async (credentials: any) => {
     const response = await API.post('/auth/login', credentials);
     if (response.data.token) {
+      // Backend returns fullName (not firstName/lastName separately)
+      const fullName: string = response.data.fullName || '';
+      const parts = fullName.trim().split(' ');
+      const firstName = parts[0] || '';
+      const lastName = parts.slice(1).join(' ') || '';
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify({
+        id: response.data.id,
         username: response.data.username,
+        email: response.data.email,
         role: response.data.role,
-        firstName: response.data.firstName,
-        lastName: response.data.lastName,
+        fullName: fullName || response.data.username || 'Administrator',
+        firstName,
+        lastName,
+        associatedRepId: response.data.associatedRepId,
       }));
     }
     return response.data;
@@ -119,7 +128,7 @@ export const orderService = {
   submit: (data: any) => API.post('/orders', data),
   getPending: () => API.get('/orders/pending'),
   approve: (id: number | string) => API.post(`/orders/${id}/approve`),
-  reject: (id: number | string, remarks: string) => API.post(`/orders/${id}/reject`, { remarks }),
+  reject: (id: number | string, remarks: string) => API.post(`/orders/${id}/reject`, { status: 'REJECTED', remarks }),
 };
 
 export const priceApprovalService = {

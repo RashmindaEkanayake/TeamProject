@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { priceApprovalService, itemService, authService } from '../services/api';
+import Modal from '../components/Modal';
 
 interface PriceRow {
   priceId: number;
@@ -189,52 +190,48 @@ const PriceApproval: React.FC = () => {
         )}
       </section>
 
-      {/* New Price Request Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
-          <div className="bg-surface-elevated border border-glass-border rounded-2xl shadow-2xl w-full max-w-md" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
-              <h2 className="text-lg font-bold text-on-surface">New Price Change Request</h2>
-              <button onClick={() => setShowModal(false)} className="p-2 hover:bg-surface rounded-lg text-on-surface-muted"><span className="material-symbols-outlined">close</span></button>
-            </div>
-            <form onSubmit={handleSubmitRequest} className="p-6 space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">Item</label>
-                <select required value={form.itemId} onChange={e => setForm(f => ({ ...f, itemId: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary transition-all">
-                  <option value="">Select item...</option>
-                  {items.map((it: any) => (
-                    <option key={it.itemId} value={it.itemId}>{it.brand} {it.model} — {it.partNumber}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  { label: 'Retail Price', key: 'retailPrice' },
-                  { label: 'Import Price', key: 'importPrice' },
-                  { label: 'Sale Price', key: 'salePrice' },
-                ].map(f => (
-                  <div key={f.key}>
-                    <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">{f.label}</label>
-                    <input type="number" required min={0} step="0.01"
-                      value={form[f.key as keyof typeof form]}
-                      onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
-                      placeholder="0.00"
-                      className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all" />
-                  </div>
-                ))}
-              </div>
-              <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 rounded-xl bg-surface-elevated border border-glass-border text-on-surface text-sm hover:bg-outline-variant transition-colors">Cancel</button>
-                <button type="submit" disabled={submitting} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-surface text-sm font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
-                  {submitting && <div className="w-4 h-4 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin" />}
-                  {submitting ? 'Submitting...' : 'Submit Request'}
-                </button>
-              </div>
-            </form>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="New Price Change Request"
+        maxWidthClass="max-w-md"
+      >
+        <form onSubmit={handleSubmitRequest} className="p-6 space-y-4">
+          <div>
+            <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">Item</label>
+            <select required value={form.itemId} onChange={e => setForm(f => ({ ...f, itemId: e.target.value }))}
+              className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary transition-all">
+              <option value="">Select item...</option>
+              {items.map((it: any) => (
+                <option key={it.itemId} value={it.itemId}>{it.brand} {it.model} — {it.partNumber}</option>
+              ))}
+            </select>
           </div>
-        </div>
-      )}
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { label: 'Retail Price', key: 'retailPrice' },
+              { label: 'Import Price', key: 'importPrice' },
+              { label: 'Sale Price', key: 'salePrice' },
+            ].map(f => (
+              <div key={f.key}>
+                <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">{f.label}</label>
+                <input type="number" required min={0} step="0.01"
+                  value={form[f.key as keyof typeof form]}
+                  onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
+                  placeholder="0.00"
+                  className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all" />
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 rounded-xl bg-surface-elevated border border-glass-border text-on-surface text-sm hover:bg-outline-variant transition-colors">Cancel</button>
+            <button type="submit" disabled={submitting} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-surface text-sm font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+              {submitting && <div className="w-4 h-4 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin" />}
+              {submitting ? 'Submitting...' : 'Submit Request'}
+            </button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

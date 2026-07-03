@@ -126,4 +126,12 @@
   @apply bg-glass backdrop-blur-glass border border-glass-border shadow-[0_8px_32px_rgba(0,0,0,0.4)];
 }
 
+/* Login page card slide-up mount */
+.login-card-enter {
+  animation: loginCardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
+@keyframes loginCardEnter {
+  0%  { opacity: 0; transform: translateY(28px) scale(0.98); }
+  100%{ opacity: 1; transform: translateY(0)   scale(1);    }
+}

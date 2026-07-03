@@ -53,11 +53,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onNewTransactionClick }) => {
           <span className="text-sm">Dashboard</span>
         </NavLink>
 
-        <NavLink to={`${basePrefix}/inventory`} className={navLinkClass}>
-          <span className="material-symbols-outlined">inventory_2</span>
-          <span className="text-sm">Inventory</span>
-        </NavLink>
+        {/* Inventory — Admin only */}
+        {isAdmin && (
+          <NavLink to={`${basePrefix}/inventory`} className={navLinkClass}>
+            <span className="material-symbols-outlined">inventory_2</span>
+            <span className="text-sm">Inventory</span>
+          </NavLink>
+        )}
 
+        {/* Receiving — Admin only */}
         {isAdmin && (
           <NavLink to={`${basePrefix}/goods-receiving`} className={navLinkClass}>
             <span className="material-symbols-outlined">input</span>
@@ -65,21 +69,27 @@ const Sidebar: React.FC<SidebarProps> = ({ onNewTransactionClick }) => {
           </NavLink>
         )}
 
+        {/* Orders — visible to all */}
         <NavLink to={`${basePrefix}/orders`} className={navLinkClass}>
           <span className="material-symbols-outlined">shopping_cart</span>
           <span className="text-sm">Orders</span>
         </NavLink>
 
+        {/* Customers — visible to all */}
         <NavLink to={`${basePrefix}/customers`} className={navLinkClass}>
           <span className="material-symbols-outlined">group</span>
           <span className="text-sm">Customers</span>
         </NavLink>
 
-        <NavLink to={`${basePrefix}/suppliers`} className={navLinkClass}>
-          <span className="material-symbols-outlined">local_shipping</span>
-          <span className="text-sm">Suppliers</span>
-        </NavLink>
+        {/* Suppliers — Admin only */}
+        {isAdmin && (
+          <NavLink to={`${basePrefix}/suppliers`} className={navLinkClass}>
+            <span className="material-symbols-outlined">local_shipping</span>
+            <span className="text-sm">Suppliers</span>
+          </NavLink>
+        )}
 
+        {/* Pricing — Admin only */}
         {isAdmin && (
           <NavLink to={`${basePrefix}/price-approvals`} className={navLinkClass}>
             <span className="material-symbols-outlined">payments</span>
@@ -87,15 +97,19 @@ const Sidebar: React.FC<SidebarProps> = ({ onNewTransactionClick }) => {
           </NavLink>
         )}
 
+        {/* Notifications — visible to all */}
         <NavLink to={`${basePrefix}/notifications`} className={navLinkClass}>
           <span className="material-symbols-outlined">notifications</span>
           <span className="text-sm">Notifications</span>
         </NavLink>
 
-        <NavLink to={`${basePrefix}/reports`} className={navLinkClass}>
-          <span className="material-symbols-outlined">analytics</span>
-          <span className="text-sm">Analytics</span>
-        </NavLink>
+        {/* Analytics / Reports — Admin only */}
+        {isAdmin && (
+          <NavLink to={`${basePrefix}/reports`} className={navLinkClass}>
+            <span className="material-symbols-outlined">analytics</span>
+            <span className="text-sm">Analytics</span>
+          </NavLink>
+        )}
       </nav>
 
       <div className="pt-6 mt-4 border-t border-glass-border space-y-2">

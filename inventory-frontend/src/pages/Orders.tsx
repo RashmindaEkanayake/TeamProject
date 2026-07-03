@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { orderService, customerService, itemService, inventoryService, authService } from '../services/api';
 
 interface OrderRow {
@@ -234,8 +235,8 @@ const Orders: React.FC = () => {
       </section>
 
       {/* New Order Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
+      {showModal && createPortal(
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
           <div className="bg-surface-elevated border border-glass-border rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border flex-shrink-0">
               <h2 className="text-lg font-bold text-on-surface">New Order</h2>
@@ -315,12 +316,13 @@ const Orders: React.FC = () => {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Reject Modal */}
-      {rejectId !== null && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setRejectId(null)}>
+      {rejectId !== null && createPortal(
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setRejectId(null)}>
           <div className="bg-surface-elevated border border-glass-border rounded-2xl shadow-2xl w-full max-w-md" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
               <h2 className="text-lg font-bold text-on-surface">Reject Order</h2>
@@ -344,7 +346,8 @@ const Orders: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { itemService, inventoryService } from '../services/api';
+import Modal from '../components/Modal';
 
 interface StockRow {
   itemId: number;
@@ -247,68 +248,63 @@ const Inventory: React.FC = () => {
       </section>
 
       {/* Add/Edit Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
-          <div className="bg-surface-elevated border border-glass-border rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
-              <h2 className="text-lg font-bold text-on-surface">{editId ? 'Edit Item' : 'Add New Item'}</h2>
-              <button onClick={() => setShowModal(false)} className="p-2 hover:bg-surface rounded-lg text-on-surface-muted hover:text-on-surface transition-colors">
-                <span className="material-symbols-outlined">close</span>
-              </button>
-            </div>
-            <form onSubmit={handleSave} className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { label: 'Brand', key: 'brand' as keyof ItemForm, placeholder: 'e.g. Samsung' },
-                  { label: 'Model', key: 'model' as keyof ItemForm, placeholder: 'e.g. Galaxy S24' },
-                  { label: 'Category', key: 'category' as keyof ItemForm, placeholder: 'e.g. Electronics' },
-                  { label: 'Part Number', key: 'partNumber' as keyof ItemForm, placeholder: 'e.g. SAM-001' },
-                ].map(({ label, key, placeholder }) => (
-                  <div key={key}>
-                    <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">{label}</label>
-                    <input
-                      required
-                      value={form[key] as string}
-                      onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                      placeholder={placeholder}
-                      className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-on-surface-muted"
-                    />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">Description</label>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={editId ? 'Edit Item' : 'Add New Item'}
+        maxWidthClass="max-w-lg"
+      >
+        <form onSubmit={handleSave} className="p-6 space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { label: 'Brand', key: 'brand' as keyof ItemForm, placeholder: 'e.g. Samsung' },
+              { label: 'Model', key: 'model' as keyof ItemForm, placeholder: 'e.g. Galaxy S24' },
+              { label: 'Category', key: 'category' as keyof ItemForm, placeholder: 'e.g. Electronics' },
+              { label: 'Part Number', key: 'partNumber' as keyof ItemForm, placeholder: 'e.g. SAM-001' },
+            ].map(({ label, key, placeholder }) => (
+              <div key={key}>
+                <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">{label}</label>
                 <input
-                  value={form.description}
-                  onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                  placeholder="Optional description"
+                  required
+                  value={form[key] as string}
+                  onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                  placeholder={placeholder}
                   className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-on-surface-muted"
                 />
               </div>
-              <div>
-                <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">Initial Quantity</label>
-                <input
-                  type="number"
-                  min={0}
-                  required
-                  value={form.quantity}
-                  onChange={e => setForm(f => ({ ...f, quantity: Number(e.target.value) }))}
-                  className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
-                />
-              </div>
-              <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 rounded-xl bg-surface-elevated border border-glass-border text-on-surface text-sm hover:bg-outline-variant transition-colors">
-                  Cancel
-                </button>
-                <button type="submit" disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-surface text-sm font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
-                  {saving && <div className="w-4 h-4 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin" />}
-                  {saving ? 'Saving...' : (editId ? 'Update Item' : 'Add Item')}
-                </button>
-              </div>
-            </form>
+            ))}
           </div>
-        </div>
-      )}
+          <div>
+            <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">Description</label>
+            <input
+              value={form.description}
+              onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+              placeholder="Optional description"
+              className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-on-surface-muted"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">Initial Quantity</label>
+            <input
+              type="number"
+              min={0}
+              required
+              value={form.quantity}
+              onChange={e => setForm(f => ({ ...f, quantity: Number(e.target.value) }))}
+              className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+            />
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 rounded-xl bg-surface-elevated border border-glass-border text-on-surface text-sm hover:bg-outline-variant transition-colors">
+              Cancel
+            </button>
+            <button type="submit" disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-surface text-sm font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+              {saving && <div className="w-4 h-4 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin" />}
+              {saving ? 'Saving...' : (editId ? 'Update Item' : 'Add Item')}
+            </button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };
