@@ -1,63 +1,136 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { itemService, inventoryService } from '../services/api';
 
 const ItemDetails: React.FC = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [item, setItem] = useState<any>(null);
+  const [stock, setStock] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+    const fetchItemDetails = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const [itemRes, stockRes] = await Promise.all([
+          itemService.getById(id),
+          inventoryService.getById(id).catch(() => ({ data: null })),
+        ]);
+        setItem(itemRes.data);
+        setStock(stockRes.data);
+      } catch (err: any) {
+        setError('Failed to load item details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchItemDetails();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-24 gap-3">
+        <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+        <span className="text-on-surface-muted text-sm font-medium">Loading item details...</span>
+      </div>
+    );
+  }
+
+  if (error || !item) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 gap-4">
+        <span className="material-symbols-outlined text-5xl text-error">error</span>
+        <p className="text-on-surface font-semibold text-lg">{error || 'Item not found'}</p>
+        <button
+          onClick={() => navigate(-1)}
+          className="px-4 py-2 rounded-xl bg-primary text-on-surface text-sm font-semibold hover:bg-primary-hover transition-colors"
+        >
+          Go Back
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-xl">
+    <div className="space-y-xl animate-fade-in-up">
       <section>
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-md">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-on-surface">Item Details</h1>
-            <p className="text-on-surface-muted text-sm">Review the item profile, stock level, and procurement history.</p>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="p-2 rounded-xl bg-surface-elevated border border-glass-border hover:bg-outline-variant text-on-surface transition-colors"
+            >
+              <span className="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-on-surface">
+                {item.brand} {item.model}
+              </h1>
+              <p className="text-on-surface-muted text-sm mt-1">{item.description || 'No description provided.'}</p>
+            </div>
           </div>
           <div className="text-right">
-            <p className="text-xs font-semibold text-label-md text-on-surface-muted">Item ID</p>
-            <p className="text-xl font-bold text-on-surface">{id || 'N/A'}</p>
+            <p className="text-xs font-semibold text-on-surface-muted uppercase tracking-wider">Item ID</p>
+            <p className="text-xl font-bold text-primary font-mono">#{item.itemId}</p>
           </div>
         </div>
       </section>
+
       <section className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-lg">
-        <div className="glass-panel bg-surface-elevated/40 rounded-lg border border-glass-border shadow-sm p-lg">
-          <h2 className="text-xl font-bold text-on-surface mb-md">Product Summary</h2>
-          <div className="grid gap-sm text-body-md text-on-surface-muted">
+        {/* Summary */}
+        <div className="glass-panel bg-surface-elevated/40 rounded-2xl border border-glass-border shadow-sm p-6 space-y-4">
+          <h2 className="text-xl font-bold text-on-surface border-b border-glass-border pb-3">Product Summary</h2>
+          <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-xs font-semibold text-label-md text-on-surface-muted">Name</p>
-              <p className="font-medium text-on-surface">High-Performance Widget</p>
+              <p className="text-xs font-semibold text-on-surface-muted uppercase tracking-wider mb-1">Brand</p>
+              <p className="font-semibold text-on-surface">{item.brand || '—'}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold text-label-md text-on-surface-muted">SKU</p>
-              <p className="font-medium text-on-surface">HPW-001</p>
+              <p className="text-xs font-semibold text-on-surface-muted uppercase tracking-wider mb-1">Model</p>
+              <p className="font-semibold text-on-surface">{item.model || '—'}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold text-label-md text-on-surface-muted">Category</p>
-              <p className="font-medium text-on-surface">Industrial Electronics</p>
+              <p className="text-xs font-semibold text-on-surface-muted uppercase tracking-wider mb-1">Part Number</p>
+              <p className="font-mono text-on-surface">{item.partNumber || '—'}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold text-label-md text-on-surface-muted">Stock Available</p>
-              <p className="font-medium text-on-surface">8,240 units</p>
+              <p className="text-xs font-semibold text-on-surface-muted uppercase tracking-wider mb-1">Category</p>
+              <p className="font-semibold text-on-surface">{item.category || '—'}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold text-label-md text-on-surface-muted">Location</p>
-              <p className="font-medium text-on-surface">Warehouse A</p>
+              <p className="text-xs font-semibold text-on-surface-muted uppercase tracking-wider mb-1">Current Stock</p>
+              <p className="font-bold text-on-surface text-base">
+                {stock?.currentQuantity != null ? stock.currentQuantity.toLocaleString() : 'N/A'} units
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-on-surface-muted uppercase tracking-wider mb-1">Minimum Stock Threshold</p>
+              <p className="font-semibold text-on-surface-muted">
+                {stock?.minimumStockLevel != null ? stock.minimumStockLevel.toLocaleString() : 'N/A'} units
+              </p>
             </div>
           </div>
         </div>
-        <div className="glass-panel bg-surface-elevated/40 rounded-lg border border-glass-border shadow-sm p-lg">
-          <h2 className="text-xl font-bold text-on-surface mb-md">Pricing & Status</h2>
-          <div className="space-y-md">
+
+        {/* Pricing & Status */}
+        <div className="glass-panel bg-surface-elevated/40 rounded-2xl border border-glass-border shadow-sm p-6 space-y-4">
+          <h2 className="text-xl font-bold text-on-surface border-b border-glass-border pb-3">Pricing Details</h2>
+          <div className="space-y-3 text-sm">
             <div className="flex items-center justify-between">
-              <span className="text-on-surface-muted">Current Price</span>
-              <span className="font-medium text-on-surface">$42.00</span>
+              <span className="text-on-surface-muted">Retail Price</span>
+              <span className="font-semibold text-on-surface">${item.retailPrice?.toFixed(2) ?? '0.00'}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-on-surface-muted">Last Price Update</span>
-              <span className="font-medium text-on-surface">2 days ago</span>
+              <span className="text-on-surface-muted">Import Price</span>
+              <span className="font-semibold text-on-surface">${item.importPrice?.toFixed(2) ?? '0.00'}</span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-on-surface-muted">Approval Status</span>
-              <span className="font-medium text-secondary">Approved</span>
+            <div className="flex items-center justify-between pt-2 border-t border-glass-border">
+              <span className="text-on-surface font-semibold">Selling Price</span>
+              <span className="font-bold text-primary text-lg">${item.salePrice?.toFixed(2) ?? item.sellingPrice?.toFixed(2) ?? '0.00'}</span>
             </div>
           </div>
         </div>
@@ -67,3 +140,4 @@ const ItemDetails: React.FC = () => {
 };
 
 export default ItemDetails;
+

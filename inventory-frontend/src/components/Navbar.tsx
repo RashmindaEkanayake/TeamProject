@@ -159,27 +159,11 @@ const Navbar: React.FC<NavbarProps> = ({ searchQuery = '', onSearchChange }) => 
 
             {/* Avatar */}
             <div className="relative flex-shrink-0">
-              <img
-                alt={`${userDisplayName} avatar`}
-                className="w-10 h-10 rounded-xl object-cover border border-outline-variant shadow-sm group-hover:border-primary transition-colors"
-                src={userAvatar}
-                onError={(e) => {
-                  // Fallback to initial if image fails
-                  const target = e.currentTarget;
-                  target.style.display = 'none';
-                  const sibling = target.nextElementSibling as HTMLElement | null;
-                  if (sibling) sibling.style.display = 'flex';
-                }}
-              />
-              {/* Fallback initial avatar */}
-              <div
-                style={{ display: 'none' }}
-                className="w-10 h-10 rounded-xl border border-outline-variant shadow-sm bg-primary flex items-center justify-center text-on-surface font-bold text-base"
-              >
+              <div className="w-10 h-10 rounded-xl border border-outline-variant shadow-sm bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-surface font-bold text-base group-hover:border-primary transition-colors">
                 {avatarInitial}
               </div>
               {/* Online status dot */}
-              <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-success border-2 border-background rounded-full"></div>
+              <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-success border-2 border-background rounded-full" />
             </div>
 
             {/* Chevron */}

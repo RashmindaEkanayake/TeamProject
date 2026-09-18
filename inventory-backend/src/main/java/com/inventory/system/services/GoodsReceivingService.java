@@ -176,8 +176,8 @@ public class GoodsReceivingService {
         }
 
         String decisionUpper = decision.toUpperCase();
-        if ("VERIFY".equals(decisionUpper) || "VERIFIED".equals(decisionUpper)) {
-            receipt.setStatus("VERIFIED");
+        if ("VERIFY".equals(decisionUpper) || "VERIFIED".equals(decisionUpper) || "APPROVED".equals(decisionUpper) || "APPROVE".equals(decisionUpper)) {
+            receipt.setStatus("APPROVED");
             
             // Fetch all items and update stock only for those marked "ARRIVED"
             List<GoodsReceivingItem> items = goodsReceivingItemRepository.findByGoodsReceivingReceivingId(receivingId);
@@ -201,7 +201,7 @@ public class GoodsReceivingService {
         } else if ("REJECT".equals(decisionUpper) || "REJECTED".equals(decisionUpper)) {
             receipt.setStatus("REJECTED");
         } else {
-            throw new IllegalArgumentException("Invalid decision. Must be VERIFIED (VERIFY) or REJECTED (REJECT).");
+            throw new IllegalArgumentException("Invalid decision. Must be APPROVED/VERIFIED or REJECTED.");
         }
 
         GoodsReceiving saved = goodsReceivingRepository.save(receipt);

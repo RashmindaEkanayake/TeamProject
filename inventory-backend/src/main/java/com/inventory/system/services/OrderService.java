@@ -79,12 +79,13 @@ public class OrderService {
                         ". Requested: " + itemReq.getQuantity() + ", Available: " + stock.getCurrentQuantity());
             }
 
-            // Retrieve active approved price
-            PriceHistory activePrice = priceHistoryRepository
-                    .findFirstByItemItemIdAndStatusOrderByStartDateDesc(itemReq.getItemId(), "APPROVED")
-                    .orElseThrow(() -> new ResourceNotFoundException("No active approved price set for item ID: " + itemReq.getItemId()));
+            // Retrieve active approved price with fallback
+            Optional<PriceHistory> activePriceOpt = priceHistoryRepository
+                    .findFirstByItemItemIdAndStatusOrderByStartDateDesc(itemReq.getItemId(), "APPROVED");
 
-            double unitPrice = activePrice.getSalePrice();
+            double unitPrice = activePriceOpt.map(PriceHistory::getSalePrice)
+                    .orElse(itemReq.getUnitPrice() > 0 ? itemReq.getUnitPrice() : 0.0);
+
             double lineTotal = (unitPrice * itemReq.getQuantity()) - itemReq.getDiscountAmount();
             if (lineTotal < 0) lineTotal = 0;
 

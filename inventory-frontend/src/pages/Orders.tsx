@@ -80,7 +80,8 @@ const Orders: React.FC = () => {
 
   const addLine = () => {
     const firstItem = items[0];
-    setOrderLines(lines => [...lines, { itemId: firstItem?.itemId || 0, itemName: firstItem?.model || '', quantity: 1, unitPrice: 0, discountAmount: 0 }]);
+    const initialPrice = firstItem?.sellingPrice ?? firstItem?.unitPrice ?? firstItem?.retailPrice ?? 0;
+    setOrderLines(lines => [...lines, { itemId: firstItem?.itemId || 0, itemName: firstItem ? `${firstItem.brand || ''} ${firstItem.model || ''}`.trim() : '', quantity: 1, unitPrice: initialPrice, discountAmount: 0 }]);
   };
 
   const updateLine = (idx: number, key: keyof OrderItemLine, value: any) => {
@@ -88,7 +89,8 @@ const Orders: React.FC = () => {
       if (i !== idx) return l;
       if (key === 'itemId') {
         const found = items.find((it: any) => it.itemId === Number(value));
-        return { ...l, itemId: Number(value), itemName: found ? `${found.brand} ${found.model}` : '' };
+        const price = found?.sellingPrice ?? found?.unitPrice ?? found?.retailPrice ?? 0;
+        return { ...l, itemId: Number(value), itemName: found ? `${found.brand || ''} ${found.model || ''}`.trim() : '', unitPrice: price };
       }
       return { ...l, [key]: key === 'quantity' || key === 'unitPrice' || key === 'discountAmount' ? Number(value) : value };
     }));

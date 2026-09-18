@@ -54,6 +54,9 @@ public class OrderController {
         return ResponseEntity.ok(order);
     }
 
+    @Autowired
+    private com.inventory.system.repositories.SalesRepRepository salesRepRepository;
+
     @PostMapping
     public ResponseEntity<Order> submitOrder(@Valid @RequestBody OrderRequest request, Principal principal) {
         User user = userRepository.findByUsername(principal.getName()).get();
@@ -65,7 +68,14 @@ public class OrderController {
             }
             repId = user.getAssociatedRep().getRepId();
         } else {
-            repId = 1L; // Fallback default for testing when Admin submits directly
+            if (user.getAssociatedRep() != null) {
+                repId = user.getAssociatedRep().getRepId();
+            } else {
+                repId = salesRepRepository.findAll().stream()
+                        .findFirst()
+                        .map(r -> r.getRepId())
+                        .orElse(1L);
+            }
         }
 
         return ResponseEntity.ok(orderService.submitOrder(request, repId));

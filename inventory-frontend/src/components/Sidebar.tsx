@@ -89,6 +89,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onNewTransactionClick }) => {
           </NavLink>
         )}
 
+        {/* Sales Reps — Admin only */}
+        {isAdmin && (
+          <NavLink to={`${basePrefix}/sales-reps`} className={navLinkClass}>
+            <span className="material-symbols-outlined">badge</span>
+            <span className="text-sm">Sales Reps</span>
+          </NavLink>
+        )}
+
         {/* Pricing — Admin only */}
         {isAdmin && (
           <NavLink to={`${basePrefix}/price-approvals`} className={navLinkClass}>
