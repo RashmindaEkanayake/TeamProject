@@ -67,7 +67,6 @@ public class OrderService {
         order.setClearanceStatus(false);
 
         double totalAmount = 0.0;
-        boolean requiresApproval = false;
         List<OrderItem> items = new ArrayList<>();
 
         for (OrderItemRequest itemReq : request.getItems()) {
@@ -80,12 +79,13 @@ public class OrderService {
                         ". Requested: " + itemReq.getQuantity() + ", Available: " + stock.getCurrentQuantity());
             }
 
-            // Retrieve active approved price
-            PriceHistory activePrice = priceHistoryRepository
-                    .findFirstByItemItemIdAndStatusOrderByStartDateDesc(itemReq.getItemId(), "APPROVED")
-                    .orElseThrow(() -> new ResourceNotFoundException("No active approved price set for item ID: " + itemReq.getItemId()));
+            // Retrieve active approved price with fallback
+            Optional<PriceHistory> activePriceOpt = priceHistoryRepository
+                    .findFirstByItemItemIdAndStatusOrderByStartDateDesc(itemReq.getItemId(), "APPROVED");
 
-            double unitPrice = activePrice.getSalePrice();
+            double unitPrice = activePriceOpt.map(PriceHistory::getSalePrice)
+                    .orElse(itemReq.getUnitPrice() > 0 ? itemReq.getUnitPrice() : 0.0);
+
             double lineTotal = (unitPrice * itemReq.getQuantity()) - itemReq.getDiscountAmount();
             if (lineTotal < 0) lineTotal = 0;
 
@@ -100,9 +100,9 @@ public class OrderService {
 
             totalAmount += lineTotal;
 
-            // Check if customer discount was applied
+            // Discount is noted — no longer triggers auto-approval since all orders require admin approval
             if (itemReq.getDiscountAmount() > 0) {
-                requiresApproval = true;
+                // Discount present — will be visible to admin during approval review
             }
         }
 
@@ -110,22 +110,8 @@ public class OrderService {
         order.setTotalAmount(totalAmount);
         order.setOutstandingAmount(totalAmount);
 
-        // If order total exceeds approval threshold ($5,000)
-        if (totalAmount > 5000.0) {
-            requiresApproval = true;
-        }
-
-        if (requiresApproval) {
-            order.setOrderStatus("PENDING_APPROVAL");
-        } else {
-            order.setOrderStatus("APPROVED");
-            // If approved automatically, subtract from inventory stock
-            for (OrderItem orderItem : items) {
-                InventoryStock stock = stockRepository.findById(orderItem.getItem().getItemId()).get();
-                stock.setCurrentQuantity(stock.getCurrentQuantity() - orderItem.getQuantity());
-                stockRepository.save(stock);
-            }
-        }
+        // All orders always require admin approval — no auto-approval
+        order.setOrderStatus("PENDING_APPROVAL");
 
         return orderRepository.save(order);
     }

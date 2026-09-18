@@ -3,9 +3,11 @@ package com.inventory.system.services;
 import com.inventory.system.dto.CustomerDTO;
 import com.inventory.system.dto.SalesRepDTO;
 import com.inventory.system.entities.Customer;
+import com.inventory.system.entities.Order;
 import com.inventory.system.entities.SalesRep;
 import com.inventory.system.exceptions.ResourceNotFoundException;
 import com.inventory.system.repositories.CustomerRepository;
+import com.inventory.system.repositories.OrderRepository;
 import com.inventory.system.repositories.SalesRepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class SalesRepService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     public List<SalesRepDTO> getAllSalesReps() {
         return salesRepRepository.findAll().stream()
@@ -79,11 +84,18 @@ public class SalesRepService {
         dto.setPhoneNumber(rep.getPhoneNumber());
 
         List<CustomerDTO> customerDTOs = customerRepository.findByRepRepId(rep.getRepId()).stream()
-                .map(c -> new CustomerDTO(c.getCustomerId(), c.getShopName(), c.getShopAddress(), 
-                        c.getContactNumber(), c.getShopEmail(), c.getContactPersonName(), 
+                .map(c -> new CustomerDTO(c.getCustomerId(), c.getShopName(), c.getShopAddress(),
+                        c.getContactNumber(), c.getShopEmail(), c.getContactPersonName(),
                         rep.getRepId(), rep.getFirstName() + " " + rep.getLastName()))
                 .collect(Collectors.toList());
         dto.setCustomers(customerDTOs);
+
+        // Populate order stats
+        List<Order> orders = orderRepository.findByRepRepId(rep.getRepId());
+        dto.setOrderCount(orders.size());
+        dto.setTotalOrderValue(orders.stream()
+                .mapToDouble(o -> o.getTotalAmount() != null ? o.getTotalAmount() : 0.0)
+                .sum());
 
         return dto;
     }

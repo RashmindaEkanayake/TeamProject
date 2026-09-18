@@ -30,4 +30,8 @@ public class SalesRepDTO {
     private String phoneNumber;
 
     private List<CustomerDTO> customers = new ArrayList<>();
+
+    // Performance stats (populated by service)
+    private long orderCount;
+    private double totalOrderValue;
 }

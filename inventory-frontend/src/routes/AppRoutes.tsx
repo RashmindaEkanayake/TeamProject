@@ -13,6 +13,7 @@ import ItemDetails from '../pages/ItemDetails';
 import Notifications from '../pages/Notifications';
 import Reports from '../pages/Reports';
 import Settings from '../pages/Settings';
+import SalesRepManagement from '../pages/SalesRepManagement';
 import NotFound from '../pages/NotFound';
 import MainLayout from '../layouts/MainLayout';
 import ProtectedRoute from './ProtectedRoute';
@@ -29,6 +30,7 @@ const AppRoutes: React.FC = () => (
         <Route path="orders" element={<Orders />} />
         <Route path="customers" element={<Customers />} />
         <Route path="suppliers" element={<Suppliers />} />
+        <Route path="sales-reps" element={<SalesRepManagement />} />
         <Route path="price-approvals" element={<PriceApproval />} />
         <Route path="item/:id" element={<ItemDetails />} />
         <Route path="notifications" element={<Notifications />} />
@@ -38,12 +40,9 @@ const AppRoutes: React.FC = () => (
       <Route path="/sales" element={<ProtectedRoute allowedRoles={['SALES_REP']} />}>
         <Route index element={<Navigate to="/sales/dashboard" replace />} />
         <Route path="dashboard" element={<SalesDashboard />} />
-        <Route path="inventory" element={<Inventory />} />
         <Route path="orders" element={<Orders />} />
         <Route path="customers" element={<Customers />} />
-        <Route path="suppliers" element={<Suppliers />} />
         <Route path="notifications" element={<Notifications />} />
-        <Route path="reports" element={<Reports />} />
         <Route path="item/:id" element={<ItemDetails />} />
         <Route path="settings" element={<Settings />} />
       </Route>

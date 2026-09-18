@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { customerService } from '../services/api';
+import Modal from '../components/Modal';
 
 interface Customer {
   customerId: number;
@@ -151,40 +152,35 @@ const Customers: React.FC = () => {
         )}
       </section>
 
-      {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
-          <div className="bg-surface-elevated border border-glass-border rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
-              <h2 className="text-lg font-bold text-on-surface">{editId ? 'Edit Customer' : 'Add Customer'}</h2>
-              <button onClick={() => setShowModal(false)} className="p-2 hover:bg-surface rounded-lg text-on-surface-muted hover:text-on-surface transition-colors">
-                <span className="material-symbols-outlined">close</span>
-              </button>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={editId ? 'Edit Customer' : 'Add Customer'}
+        maxWidthClass="max-w-lg"
+      >
+        <form onSubmit={handleSave} className="p-6 space-y-4">
+          {fields.map(f => (
+            <div key={f.key}>
+              <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">{f.label}</label>
+              <input
+                type={('type' in f ? f.type : 'text') as string}
+                required={f.key !== 'shopEmail'}
+                value={form[f.key]}
+                onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
+                placeholder={f.placeholder}
+                className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-on-surface-muted"
+              />
             </div>
-            <form onSubmit={handleSave} className="p-6 space-y-4">
-              {fields.map(f => (
-                <div key={f.key}>
-                  <label className="block text-xs font-semibold text-on-surface-muted mb-1.5 uppercase tracking-wider">{f.label}</label>
-                  <input
-                    type={('type' in f ? f.type : 'text') as string}
-                    required={f.key !== 'shopEmail'}
-                    value={form[f.key]}
-                    onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
-                    placeholder={f.placeholder}
-                    className="w-full px-3 py-2.5 bg-surface border border-glass-border rounded-xl text-sm text-on-surface outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-on-surface-muted"
-                  />
-                </div>
-              ))}
-              <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 rounded-xl bg-surface-elevated border border-glass-border text-on-surface text-sm hover:bg-outline-variant transition-colors">Cancel</button>
-                <button type="submit" disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-surface text-sm font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
-                  {saving && <div className="w-4 h-4 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin" />}
-                  {saving ? 'Saving...' : (editId ? 'Update' : 'Add Customer')}
-                </button>
-              </div>
-            </form>
+          ))}
+          <div className="flex gap-3 pt-2">
+            <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 rounded-xl bg-surface-elevated border border-glass-border text-on-surface text-sm hover:bg-outline-variant transition-colors">Cancel</button>
+            <button type="submit" disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-surface text-sm font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+              {saving && <div className="w-4 h-4 border-2 border-on-surface/30 border-t-on-surface rounded-full animate-spin" />}
+              {saving ? 'Saving...' : (editId ? 'Update' : 'Add Customer')}
+            </button>
           </div>
-        </div>
-      )}
+        </form>
+      </Modal>
     </div>
   );
 };

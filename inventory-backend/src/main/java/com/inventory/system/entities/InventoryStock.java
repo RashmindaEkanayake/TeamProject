@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import org.springframework.data.domain.Persistable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "inventory_stock")
-public class InventoryStock {
+public class InventoryStock implements Persistable<Long> {
 
     @Id
     @Column(name = "item_id")
@@ -30,6 +31,25 @@ public class InventoryStock {
 
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
+
+    @Transient
+    private boolean isNewEntity = true;
+
+    @Override
+    public Long getId() {
+        return itemId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return isNewEntity;
+    }
+
+    @PostPersist
+    @PostLoad
+    protected void markNotNew() {
+        this.isNewEntity = false;
+    }
 
     @PrePersist
     @PreUpdate

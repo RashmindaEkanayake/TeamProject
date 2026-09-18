@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { orderService, customerService, itemService, inventoryService, authService } from '../services/api';
 
 interface OrderRow {
@@ -79,7 +80,8 @@ const Orders: React.FC = () => {
 
   const addLine = () => {
     const firstItem = items[0];
-    setOrderLines(lines => [...lines, { itemId: firstItem?.itemId || 0, itemName: firstItem?.model || '', quantity: 1, unitPrice: 0, discountAmount: 0 }]);
+    const initialPrice = firstItem?.sellingPrice ?? firstItem?.unitPrice ?? firstItem?.retailPrice ?? 0;
+    setOrderLines(lines => [...lines, { itemId: firstItem?.itemId || 0, itemName: firstItem ? `${firstItem.brand || ''} ${firstItem.model || ''}`.trim() : '', quantity: 1, unitPrice: initialPrice, discountAmount: 0 }]);
   };
 
   const updateLine = (idx: number, key: keyof OrderItemLine, value: any) => {
@@ -87,7 +89,8 @@ const Orders: React.FC = () => {
       if (i !== idx) return l;
       if (key === 'itemId') {
         const found = items.find((it: any) => it.itemId === Number(value));
-        return { ...l, itemId: Number(value), itemName: found ? `${found.brand} ${found.model}` : '' };
+        const price = found?.sellingPrice ?? found?.unitPrice ?? found?.retailPrice ?? 0;
+        return { ...l, itemId: Number(value), itemName: found ? `${found.brand || ''} ${found.model || ''}`.trim() : '', unitPrice: price };
       }
       return { ...l, [key]: key === 'quantity' || key === 'unitPrice' || key === 'discountAmount' ? Number(value) : value };
     }));
@@ -234,8 +237,8 @@ const Orders: React.FC = () => {
       </section>
 
       {/* New Order Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
+      {showModal && createPortal(
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
           <div className="bg-surface-elevated border border-glass-border rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border flex-shrink-0">
               <h2 className="text-lg font-bold text-on-surface">New Order</h2>
@@ -315,12 +318,13 @@ const Orders: React.FC = () => {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Reject Modal */}
-      {rejectId !== null && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setRejectId(null)}>
+      {rejectId !== null && createPortal(
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={() => setRejectId(null)}>
           <div className="bg-surface-elevated border border-glass-border rounded-2xl shadow-2xl w-full max-w-md" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-glass-border">
               <h2 className="text-lg font-bold text-on-surface">Reject Order</h2>
@@ -344,7 +348,8 @@ const Orders: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

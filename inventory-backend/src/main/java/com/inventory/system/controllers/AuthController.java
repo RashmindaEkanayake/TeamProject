@@ -37,7 +37,12 @@ public class AuthController {
         
         User user = userRepository.findByUsername(loginRequest.getUsername()).get();
         Long associatedRepId = user.getAssociatedRep() != null ? user.getAssociatedRep().getRepId() : null;
-        String fullName = user.getFirstName() + " " + user.getLastName();
+        String fn = user.getFirstName() != null ? user.getFirstName().trim() : "";
+        String ln = user.getLastName() != null ? user.getLastName().trim() : "";
+        String fullName = (fn + " " + ln).trim();
+        if (fullName.isEmpty()) {
+            fullName = user.getUsername();
+        }
 
         return ResponseEntity.ok(new JwtResponse(
                 jwt,
