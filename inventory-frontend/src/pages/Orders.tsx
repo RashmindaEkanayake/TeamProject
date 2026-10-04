@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { orderService, customerService, itemService, inventoryService, authService } from '../services/api';
+import { orderService, customerService, itemService, authService } from '../services/api';
 
 interface OrderRow {
   orderId: number;
@@ -35,7 +35,6 @@ const Orders: React.FC = () => {
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [items, setItems] = useState<any[]>([]);
-  const [inventory, setInventory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [showModal, setShowModal] = useState(false);
@@ -50,11 +49,10 @@ const Orders: React.FC = () => {
   const fetchAll = async () => {
     setLoading(true);
     try {
-      const [ordRes, custRes, itemRes, invRes] = await Promise.all([
+      const [ordRes, custRes, itemRes] = await Promise.all([
         orderService.getAll(),
         customerService.getAll(),
         itemService.getAll(),
-        inventoryService.getAll(),
       ]);
       const raw: any[] = ordRes.data || [];
       setOrders(raw.map((o: any) => ({
@@ -68,7 +66,6 @@ const Orders: React.FC = () => {
       })));
       setCustomers(custRes.data || []);
       setItems(itemRes.data || []);
-      setInventory(invRes.data || []);
     } catch {
       //
     } finally {

@@ -22,7 +22,7 @@ const ItemDetails: React.FC = () => {
         ]);
         setItem(itemRes.data);
         setStock(stockRes.data);
-      } catch (err: any) {
+      } catch {
         setError('Failed to load item details.');
       } finally {
         setLoading(false);

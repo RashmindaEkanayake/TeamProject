@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { priceApprovalService, itemService, authService } from '../services/api';
 import Modal from '../components/Modal';
 
@@ -27,7 +27,7 @@ const PriceApproval: React.FC = () => {
   const [form, setForm] = useState({ itemId: '', retailPrice: '', importPrice: '', salePrice: '' });
   const [submitting, setSubmitting] = useState(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [priceRes, itemRes] = await Promise.all([
@@ -52,9 +52,9 @@ const PriceApproval: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [isAdmin]);
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   const handleApprove = async (id: number) => {
     setActionLoading(id);

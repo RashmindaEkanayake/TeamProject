@@ -10,8 +10,8 @@ INSERT INTO sales_reps (rep_id, first_name, last_name, email, phone_number) VALU
 -- Sales Rep: username 'salesrep', password 'password123'
 
 INSERT INTO users (id, username, password, email, role, first_name, last_name, associated_rep_id) VALUES
-(1, 'admin', '$2a$10$kHkvpMVPTVPoHnT/xPUFZ.EbolcxYU9N85HzoV68b1v26p9verxXe', 'admin@system.com', 'ADMIN', 'System', 'Administrator', NULL),
-(2, 'salesrep', '$2a$10$kHkvpMVPTVPoHnT/xPUFZ.EbolcxYU9N85HzoV68b1v26p9verxXe', 'john.doe@system.com', 'SALES_REP', 'John', 'Doe', 1);
+(1, 'admin', '$2a$10$pLgqH1gHk5V5O0lHqjUbe.W3t2E3wU7v0L5hJ9y2g2M2sWw9H8z6e', 'admin@system.com', 'ADMIN', 'System', 'Administrator', NULL),
+(2, 'salesrep', '$2a$10$pLgqH1gHk5V5O0lHqjUbe.W3t2E3wU7v0L5hJ9y2g2M2sWw9H8z6e', 'john.doe@system.com', 'SALES_REP', 'John', 'Doe', 1);
 
 -- Seed Suppliers
 INSERT INTO suppliers (supplier_id, company_name, company_email, contact_number, fax, country, bank_details, contact_person, contact_person_number, person_email) VALUES

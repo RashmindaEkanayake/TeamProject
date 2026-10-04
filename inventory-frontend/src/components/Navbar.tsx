@@ -33,10 +33,6 @@ const Navbar: React.FC<NavbarProps> = ({ searchQuery = '', onSearchChange }) => 
 
   const userRoleText = user?.role === 'ADMIN' ? 'Administrator' : 'Sales Representative';
 
-  const adminAvatar = 'https://lh3.googleusercontent.com/aida-public/AB6AXuB-lqnPyHdln69o1kJoUsQtlDbkX_OBidaqkI2HQxHGvFVoy9c7_K9vD9lmmG1GnWEtq2MlCGjfw1qLq14_6xlTqcmveQz0a-Qnk7lrguJfLKh_VOGmH8_spI8peXvqliWKkjVMMRMum9EPARgXzii9qCDCqRhVg94H0riA-38rA4BpkDLuMcRdkZ-MRAL4LCRWMU7QEWLbR5mvjBfmK0gp1adndFcREaKk_pjmXF-WtVX-pKII5PTx7WKMamC0gFEtGh3NiEtmZ_Y';
-  const repAvatar = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDx_he0MfXJAz3TFmB_bzbAy7-QMOpzX5wEIHUnlAmf2T-5j2URnuiFntM-t19-ICNos_5ihfHyxYKgGU2_HbBiadNKW5oYwM3er-ZUMnFchJIZWJgD-Uj3iNFk4bwJfez_yb2a0xfzl0eBq3MSFSpXdaXtD-Ukit6D2h2Ie8awAc5DBjE-dCbifmsbe8aNtOEA1jFJ5KszqH_11DdIrg7xV7QqywdQOcxKRmhHFoqYK1AThmmKwI1MhwRMVljLwfgUgky9iwtP4Bw';
-  const userAvatar = user?.role === 'ADMIN' ? adminAvatar : repAvatar;
-
   useEffect(() => {
     const theme = localStorage.getItem('theme');
     if (theme === 'light') {
