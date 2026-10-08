@@ -1,0 +1,19 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: atlas_erp
+      MYSQL_USER: ${DB_USERNAME:?Run scripts/configure.py first}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Database password required}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Root password required}
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - atlas_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+volumes:
+  atlas_mysql_data:

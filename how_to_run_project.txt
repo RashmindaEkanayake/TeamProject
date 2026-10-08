@@ -1,0 +1,125 @@
+================================================================
+              ATLAS ERP — HOW TO RUN THE PROJECT
+================================================================
+
+REQUIREMENTS (make sure these are installed first)
+---------------------------------------------------
+  - Java 17+          → https://adoptium.net/
+  - Maven 3.9+        → https://maven.apache.org/
+  - Node.js 20+       → https://nodejs.org/
+  - Python 3          → https://www.python.org/
+  - Docker Desktop    → https://www.docker.com/products/docker-desktop/
+
+================================================================
+                    STEP-BY-STEP GUIDE
+================================================================
+
+STEP 1 — Generate Local Secrets
+---------------------------------
+Open a terminal in the project root (ATLAS-ERP/) and run:
+
+    python scripts\configure.py
+
+This creates/updates the .env file with all required secrets.
+(Skip this step if .env already exists with values.)
+
+
+STEP 2 — Start the MySQL Database (Docker)
+------------------------------------------
+Make sure Docker Desktop is running, then run:
+
+    docker compose up -d db
+
+Wait until the database is healthy. Check with:
+
+    docker compose ps
+
+Look for STATUS = "healthy" next to the "db" service.
+
+
+STEP 3 — Start the Backend (Spring Boot API)
+--------------------------------------------
+Open a NEW terminal in the project root and run:
+
+    python scripts\run_backend.py
+
+    -- OR on Windows, simply double-click: --
+    start-backend.bat
+
+Wait until you see this message in the terminal:
+    "Started InventoryApplication in X seconds"
+
+The API will be available at: http://localhost:8080/api
+
+
+STEP 4 — Start the Frontend (React / Vite)
+-------------------------------------------
+Open ANOTHER NEW terminal, go into the frontend folder:
+
+    cd frontend
+    npm ci
+    npm run dev
+
+    -- OR on Windows, simply double-click from project root: --
+    start-frontend.bat
+
+The frontend will be available at: http://localhost:5173
+
+
+================================================================
+                     LOGIN CREDENTIALS
+================================================================
+
+Open your browser and go to: http://localhost:5173
+
+  Role          | Username   | Password
+  --------------|------------|----------------------------------
+  Admin         | admin      | (see BOOTSTRAP_ADMIN_PASSWORD in .env)
+  Sales Rep     | salesrep   | (see BOOTSTRAP_SALES_PASSWORD in .env)
+
+To view your passwords, open the .env file in the project root.
+
+Example .env entries:
+    BOOTSTRAP_ADMIN_PASSWORD=<your-generated-password>
+    BOOTSTRAP_SALES_PASSWORD=<your-generated-password>
+
+================================================================
+                      QUICK REFERENCE
+================================================================
+
+Service          | URL
+-----------------|----------------------------
+Frontend (UI)    | http://localhost:5173
+Backend (API)    | http://localhost:8080/api
+MySQL Database   | localhost:3306
+
+================================================================
+                    AFTER FIRST STARTUP
+================================================================
+
+Once the app is running and seeded with demo data, you can
+disable the bootstrap seeder to prevent re-seeding:
+
+  Open .env and change:
+    BOOTSTRAP_ENABLED=true   →   BOOTSTRAP_ENABLED=false
+
+================================================================
+                      STOPPING THE PROJECT
+================================================================
+
+  - Backend:   Press Ctrl+C in the backend terminal.
+  - Frontend:  Press Ctrl+C in the frontend terminal.
+  - Database:  Run:  docker compose down
+               (Use "docker compose down -v" to also delete data)
+
+================================================================
+                         NOTES
+================================================================
+
+  - Do NOT commit or share the .env file — it contains secrets.
+  - The .env file is auto-generated and safe to regenerate.
+  - Existing credentials in .env are NEVER overwritten by the
+    configure script.
+  - MySQL data persists between restarts in a Docker volume.
+
+================================================================
