@@ -5,13 +5,13 @@ INSERT INTO sales_reps (rep_id, first_name, last_name, email, phone_number) VALU
 -- Seed Users for Authentication
 -- Password for admin is 'admin123' (BCrypt hashed) -> $2a$10$H8yQZ9v2fIeb3GkCjNf/mO073nLwD8H1226xLd/b8qJ4hHk7H4rO2
 -- Password for salesrep is 'salesrep123' (BCrypt hashed) -> $2a$10$QO0R8HhP7n7tE6u5y8hN/Ou73nLwD8H1226xLd/b8qJ4hHk7H4rO2
--- We'll use a unified BCrypt password for both: '$2a$10$pLgqH1gHk5V5O0lHqjUbe.W3t2E3wU7v0L5hJ9y2g2M2sWw9H8z6e' (BCrypt for 'password123')
+-- We'll use a unified BCrypt password for both: '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqv1PIN' (BCrypt for 'password123')
 -- Admin: username 'admin', password 'password123'
 -- Sales Rep: username 'salesrep', password 'password123'
 
 INSERT INTO users (id, username, password, email, role, first_name, last_name, associated_rep_id) VALUES
-(1, 'admin', '$2a$10$pLgqH1gHk5V5O0lHqjUbe.W3t2E3wU7v0L5hJ9y2g2M2sWw9H8z6e', 'admin@system.com', 'ADMIN', 'System', 'Administrator', NULL),
-(2, 'salesrep', '$2a$10$pLgqH1gHk5V5O0lHqjUbe.W3t2E3wU7v0L5hJ9y2g2M2sWw9H8z6e', 'john.doe@system.com', 'SALES_REP', 'John', 'Doe', 1);
+(1, 'admin', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqv1PIN', 'admin@system.com', 'ADMIN', 'System', 'Administrator', NULL),
+(2, 'salesrep', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqv1PIN', 'john.doe@system.com', 'SALES_REP', 'John', 'Doe', 1);
 
 -- Seed Suppliers
 INSERT INTO suppliers (supplier_id, company_name, company_email, contact_number, fax, country, bank_details, contact_person, contact_person_number, person_email) VALUES

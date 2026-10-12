@@ -1,0 +1,2 @@
+ALTER TABLE sales_reps ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE';
+ALTER TABLE sales_reps ADD CONSTRAINT chk_rep_status CHECK (status IN ('ACTIVE','INACTIVE'));
