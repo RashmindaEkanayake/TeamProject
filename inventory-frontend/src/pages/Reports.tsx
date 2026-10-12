@@ -1,17 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { orderService, itemService, inventoryService, salesRepService } from '../services/api';
+import { orderService, itemService, salesRepService } from '../services/api';
 
 type TimeRange = '7d' | '30d' | '90d' | '1y';
-
-interface ReportMetric {
-  title: string;
-  value: string;
-  change: string;
-  isPositive: boolean;
-  subtext: string;
-  icon: string;
-  color: string;
-}
 
 const Reports: React.FC = () => {
   const [timeRange, setTimeRange] = useState<TimeRange>('30d');
@@ -23,13 +13,11 @@ const Reports: React.FC = () => {
   const [items, setItems] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
   const [salesReps, setSalesReps] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showPrintModal, setShowPrintModal] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
         const [itemsRes, ordersRes, repsRes] = await Promise.all([
           itemService.getAll().catch(() => ({ data: [] })),
@@ -41,8 +29,6 @@ const Reports: React.FC = () => {
         setSalesReps(Array.isArray(repsRes.data) ? repsRes.data : []);
       } catch (err) {
         console.error('Error fetching analytics data:', err);
-      } finally {
-        setLoading(false);
       }
     };
     fetchData();
