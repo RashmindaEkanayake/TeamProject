@@ -22,9 +22,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   @Autowired private CustomUserDetailsService customUserDetailsService;
 
   @Override
-  protected boolean shouldNotFilter(HttpServletRequest request) {
-    return "/api/auth/login".equals(request.getServletPath());
-  }
+protected boolean shouldNotFilter(HttpServletRequest request) {
+    return "OPTIONS".equalsIgnoreCase(request.getMethod())
+        || "/api/auth/login".equals(request.getServletPath());
+}
 
   @Override
   protected void doFilterInternal(
