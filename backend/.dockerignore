@@ -1,0 +1,8 @@
+target/
+.mvn/
+mvnw
+mvnw.cmd
+data/
+*.mv.db
+*.trace.db
+.DS_Store
