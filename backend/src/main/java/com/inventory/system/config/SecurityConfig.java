@@ -54,15 +54,17 @@ public class SecurityConfig {
 
 @Bean
 public CorsConfigurationSource corsConfigurationSource() {
-  System.out.println("CORS ALLOWED ORIGINS LOADED: " + allowedOrigins);
+
+    System.out.println("CORS ALLOWED ORIGINS LOADED: " + allowedOrigins);
 
     CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.setAllowedOriginPatterns(
-        List.of(
-            "https://teamproject-frontend-*.vercel.app",
-            "http://localhost:5173"
-        )
+    // Read allowed origins directly from Railway environment variable
+    configuration.setAllowedOrigins(
+        java.util.Arrays.stream(allowedOrigins.split(","))
+            .map(String::trim)
+            .filter(origin -> !origin.isEmpty())
+            .toList()
     );
 
     configuration.setAllowedMethods(
@@ -72,6 +74,8 @@ public CorsConfigurationSource corsConfigurationSource() {
     configuration.setAllowedHeaders(List.of("*"));
 
     configuration.setAllowCredentials(false);
+
+    configuration.setMaxAge(3600L);
 
     UrlBasedCorsConfigurationSource source =
         new UrlBasedCorsConfigurationSource();
