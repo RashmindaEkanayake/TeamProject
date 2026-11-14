@@ -52,22 +52,33 @@ public class SecurityConfig {
     return authConfig.getAuthenticationManager();
   }
 
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+
     CorsConfiguration configuration = new CorsConfiguration();
-    System.out.println("====================================");
-System.out.println("CORS ALLOWED ORIGINS LOADED:");
-System.out.println(allowedOrigins);
-System.out.println("====================================");
-    configuration.setAllowedOrigins(
-        java.util.Arrays.stream(allowedOrigins.split(",")).map(String::trim).toList());
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+    configuration.setAllowedOriginPatterns(
+        List.of(
+            "https://teamproject-frontend-*.vercel.app",
+            "http://localhost:5173"
+        )
+    );
+
+    configuration.setAllowedMethods(
+        List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+    );
+
     configuration.setAllowedHeaders(List.of("*"));
+
     configuration.setAllowCredentials(false);
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+    UrlBasedCorsConfigurationSource source =
+        new UrlBasedCorsConfigurationSource();
+
     source.registerCorsConfiguration("/**", configuration);
+
     return source;
-  }
+}
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
