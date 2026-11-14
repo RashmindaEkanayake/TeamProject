@@ -54,6 +54,7 @@ public class SecurityConfig {
 
 @Bean
 public CorsConfigurationSource corsConfigurationSource() {
+  System.out.println("CORS ALLOWED ORIGINS LOADED: " + allowedOrigins);
 
     CorsConfiguration configuration = new CorsConfiguration();
 
